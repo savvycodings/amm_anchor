@@ -69,9 +69,9 @@ impl<'info> Initialize<'info> {
         require!(fee < 10000, AmmError::InvalidFee);
         // Get all our bumps
         let (auth_bump, config_bump, lp_bump) = (
-            *bumps.get("auth").ok_or(AmmError::AuthBumpError)?,
-            *bumps.get("config").ok_or(AmmError::ConfigBumpError)?,
-            *bumps.get("mint_lp").ok_or(AmmError::MintLpBumpError)?,
+            *bumps.get("auth").ok_or(AmmError::BumpError)?,
+            *bumps.get("config").ok_or(AmmError::BumpError)?,
+            *bumps.get("mint_lp").ok_or(AmmError::BumpError)?,
         );
         self.config.init(
             seed,

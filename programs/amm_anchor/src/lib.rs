@@ -3,6 +3,7 @@ use anchor_lang::prelude::*;
 mod constants;
 mod contexts;
 mod errors;
+mod helpers;
 mod state;
 
 use contexts::*;
@@ -24,5 +25,15 @@ pub mod amm_anchor {
     pub fn update(ctx: Context<Update>, locked: bool) -> Result<()> {
         ctx.accounts.update(locked);
         unimplemented!()
+    }
+
+    pub fn deposit(
+        ctx: Context<Deposit>,
+        amount: u64,
+        max_x: u64,
+        max_y: u64,
+        expiration: i64,
+    ) -> Result<()> {
+        ctx.accounts.deposit(amount, max_x, max_y, expiration);
     }
 }
