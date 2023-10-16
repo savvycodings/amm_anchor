@@ -5,7 +5,7 @@ use crate::constants::*;
 #[account]
 pub struct Config {
     pub seed: u64,
-    pub authority: Option<Pubkey>,
+    pub has_authority: bool,
     pub mint_x: Pubkey,
     pub mint_y: Pubkey,
     pub fee: u16, //Fee in base points
@@ -16,12 +16,12 @@ pub struct Config {
 }
 
 impl Config {
-    pub const LEN: usize = 8 + U64_L + OPTION_L + (PUBKEY_L * 3) + U16_L + BOOL_L + (U8_L * 3);
+    pub const LEN: usize = 8 + U64_L + (PUBKEY_L * 2) + U16_L + (BOOL_L * 2) + (U8_L * 3);
 
     pub fn init(
         &mut self,
         seed: u64,
-        authority: Option<Pubkey>,
+        has_authority: bool,
         mint_x: Pubkey,
         mint_y: Pubkey,
         fee: u16,
@@ -30,7 +30,7 @@ impl Config {
         lp_bump: u8,
     ) {
         self.seed = seed;
-        self.authority = authority;
+        self.has_authority = has_authority;
         self.mint_x = mint_x;
         self.mint_y = mint_y;
         self.fee = fee;

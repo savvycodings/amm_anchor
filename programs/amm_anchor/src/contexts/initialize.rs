@@ -1,3 +1,4 @@
+use crate::errors::AmmError;
 use crate::state::Config;
 use anchor_lang::prelude::*;
 use anchor_spl::{
@@ -47,7 +48,7 @@ pub struct Initialize<'info> {
     #[account(
         init,
         payer = initializer,
-        seeds = [b"config", seed.to_le_bytes().as_ref()],
+        seeds = [b"config", initializer.key.as_ref(), seed.to_le_bytes().as_ref()],
         bump,
         space = Config::LEN
     )]
@@ -63,8 +64,25 @@ impl<'info> Initialize<'info> {
         bumps: BTreeMap<String, u8>,
         seed: u64,
         fee: u16,
-        authority: Option<Pubkey>,
+        has_authority: bool,
     ) -> Result<()> {
-        unimplemented!()
+        require!(fee < 10000, AmmError::InvalidFee);
+        // Get all our bumps
+        let (auth_bump, config_bump, lp_bump) = (
+            *bumps.get("auth").ok_or(AmmError::AuthBumpError)?,
+            *bumps.get("config").ok_or(AmmError::ConfigBumpError)?,
+            *bumps.get("mint_lp").ok_or(AmmError::MintLpBumpError)?,
+        );
+        self.config.init(
+            seed,
+            has_authority,
+            self.mint_x.key(),
+            self.mint_y.key(),
+            fee,
+            auth_bump,
+            config_bump,
+            lp_bump,
+        );
+        Ok(())
     }
 }

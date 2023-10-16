@@ -2,6 +2,7 @@ use anchor_lang::prelude::*;
 
 mod constants;
 mod contexts;
+mod errors;
 mod state;
 
 use contexts::*;
@@ -15,8 +16,13 @@ pub mod amm_anchor {
         ctx: Context<Initialize>,
         seed: u64,
         fee: u16,
-        authority: Option<Pubkey>,
+        has_authority: bool,
     ) -> Result<()> {
-        Ok(())
+        ctx.accounts.init(ctx.bumps, seed, fee, has_authority)
+    }
+
+    pub fn update(ctx: Context<Update>, locked: bool) -> Result<()> {
+        ctx.accounts.update(locked);
+        unimplemented!()
     }
 }
