@@ -18,4 +18,7 @@ default = []
 [dependencies]
 anchor-lang = { version = "0.28.0", features = ["init-if-needed"] }
 anchor-spl = "0.28.0"
+getrandom = { version = "0.2.9", features = ["custom"] }
+winnow = "=0.4.1"
+toml_datetime = "=0.6.1"
 constant-product-curve = { git = "https://github.com/deanmlittle/constant-product-curve.git" }
